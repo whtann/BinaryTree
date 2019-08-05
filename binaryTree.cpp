@@ -1,4 +1,5 @@
 #include "binaryTree.h"
+#include <queue>
 
 int main()
 {
@@ -12,7 +13,8 @@ int main()
              << "---------------" << endl;
         cout << "1. Insert element" << endl
              << "2. Delete tree" << endl
-             << "3. Exit" << endl;
+             << "3. Display tree" << endl
+             << "4. Exit" << endl;
         cout << "Enter your choice: ";
         cin >> choice;
         //check for bad input
@@ -39,6 +41,9 @@ int main()
                 cout << "Tree Deleted" << endl;
                 break;
             case 3:
+                myTree.printTree();
+                break;
+            case 4:
                 exit(0);
                 break;
             default:
@@ -92,6 +97,7 @@ void binaryTree::insert(int key, btnode *leaf)
     if (!root)
     {
         root = new btnode;
+        root->data = key;
         root->l = root->r = nullptr;
     }
     else
@@ -122,6 +128,41 @@ void binaryTree::insert(int key, btnode *leaf)
                 leaf->r->l = leaf->r->r = nullptr;
             }
         }
+    }
+}
+
+void binaryTree::printTree()
+{
+    printTree(root);
+}
+
+void binaryTree::printTree(btnode *leaf)
+{
+    if (!root)
+    {
+        return;
+    }
+    queue<btnode *> q;
+    q.push(root);
+    while (!q.empty())
+    {
+        int nodeCount = q.size();
+        while (nodeCount > 0)
+        {
+            btnode *leaf = q.front();
+            cout << leaf->data << " ";
+            q.pop();
+            if (leaf->l)
+            {
+                q.push(leaf->l);
+            }
+            if (leaf->r)
+            {
+                q.push(leaf->r);
+            }
+            nodeCount--;
+        }
+        cout << endl;
     }
 }
 
